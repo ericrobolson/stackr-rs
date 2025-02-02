@@ -7,5 +7,5 @@ fn main() {
     // interpreter.evaluate(code, None).unwrap();
 
     // Alternative way to start repl in host
-    interpreter.start_repl();
+    interpreter.start_repl().unwrap();
 }

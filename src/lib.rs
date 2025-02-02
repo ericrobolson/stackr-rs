@@ -57,7 +57,7 @@
 //! ```
 //!
 //! Example of a custom word:
-//! ```
+//! ```stackr
 //! : squared
 //! "n -- n^2"
 //! "Squares the top of the stack"

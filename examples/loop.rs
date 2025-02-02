@@ -19,5 +19,5 @@ fn main() {
     
     "#;
     let mut interpreter = Interpreter::new(());
-    interpreter.evaluate(code, None);
+    interpreter.evaluate(code, None).unwrap();
 }
