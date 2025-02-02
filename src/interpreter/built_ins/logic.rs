@@ -10,7 +10,7 @@ pub fn register_builtins<State>(interpreter: &mut Interpreter<State>) {
             let a = interpreter.pop_bool()?;
             let b = interpreter.pop_bool()?;
             if a && b {
-                interpreter.push_number(1.0);
+                interpreter.push_number(0.0);
             } else {
                 interpreter.push_number(0.0);
             }
