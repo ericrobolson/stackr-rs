@@ -11,6 +11,3 @@ exclude = ["target/", "Makefile", ".github/"]
 
 
 [dependencies]
-
-[examples]
-add = { path = "examples/add.rs" }

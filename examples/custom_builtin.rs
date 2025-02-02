@@ -1,7 +1,7 @@
 use stacker_rs::*;
 
 fn main() {
-    let mut state: u32 = 0;
+    let state: u32 = 0;
     let mut interpreter = Interpreter::new(state);
 
     interpreter.register_builtin(

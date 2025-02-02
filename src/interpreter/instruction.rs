@@ -43,6 +43,7 @@ impl Instruction {
     }
 
     /// Expect a number from the instruction.
+    #[allow(unused)]
     pub fn expect_number<State>(&self, interpreter: &Interpreter<State>) -> Result<Number, Err> {
         match self {
             Instruction::PushNumber(number) => Ok(*number),

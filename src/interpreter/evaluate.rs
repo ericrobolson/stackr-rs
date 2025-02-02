@@ -87,7 +87,6 @@ impl<State> Interpreter<State> {
     /// Execute the program.
     pub(crate) fn execute(&mut self) -> Result<(), Err> {
         while self.program_counter < self.program.len() {
-            let previous_repl_mode = self.repl_mode;
             let instruction = self.program[self.program_counter].clone();
             self.execute_instruction(instruction)?;
             self.program_counter += 1;

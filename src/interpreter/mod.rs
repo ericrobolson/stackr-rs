@@ -35,7 +35,7 @@ pub type Number = f32;
 
 /// A value that is stored in RAM or on the stack.
 #[derive(Debug, PartialEq, Clone)]
-pub(crate) enum Value {
+pub enum Value {
     Number(Number),
     String(String),
 }

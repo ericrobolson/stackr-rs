@@ -23,6 +23,7 @@ impl<State> RamValue<State> {
         }
     }
 
+    #[allow(unused)]
     pub fn value(&self) -> Option<Value> {
         match self {
             RamValue::Value(value) => Some(value.clone()),
@@ -30,6 +31,7 @@ impl<State> RamValue<State> {
         }
     }
 
+    #[allow(unused)]
     pub fn expect_address(&self) -> Address {
         match self {
             RamValue::Address(address) => *address,
@@ -37,6 +39,7 @@ impl<State> RamValue<State> {
         }
     }
 
+    #[allow(unused)]
     pub fn expect_value(&self) -> Value {
         match self {
             RamValue::Value(value) => value.clone(),
