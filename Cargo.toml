@@ -6,7 +6,7 @@ license = "MIT"
 description = "A stack-based interpreter to be embedded in your application. Heavily inspired by Forth."
 repository = "https://github.com/ericrobolson/stackr-rs"
 keywords = ["forth", "stack", "interpreter", "embedded", "scripting"]
-categories = ["scripting", "embedded"]
+categories = ["game-development"]
 exclude = ["target/", "Makefile", ".github/"]
 
 
