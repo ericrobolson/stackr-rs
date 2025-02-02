@@ -3,6 +3,7 @@ name = "stackr-rs"
 version = "0.1.2"
 edition = "2021"
 license = "MIT"
+documentation = "https://docs.rs/stackr-rs/latest/stackr_rs/"
 description = "A stack-based interpreter to be embedded in your application. Heavily inspired by Forth."
 repository = "https://github.com/ericrobolson/stackr-rs"
 keywords = ["forth", "stack", "interpreter", "embedded", "scripting"]
