@@ -15,7 +15,7 @@ pub fn register_builtins<State>(interpreter: &mut Interpreter<State>) {
             if interpreter.program_counter_stack.is_empty() {
                 return Err((
                     "'begin' statement not found".into(),
-                    interpreter.get_location(),
+                    interpreter.location(),
                 ));
             }
 
@@ -49,7 +49,7 @@ pub fn register_builtins<State>(interpreter: &mut Interpreter<State>) {
             None => {
                 return Err((
                     "'loop' statement not found".into(),
-                    interpreter.get_location(),
+                    interpreter.location(),
                 ));
             }
         }
@@ -87,7 +87,7 @@ mod tests {
             result,
             Err((
                 "'begin' statement not found".into(),
-                interpreter.get_location()
+                interpreter.location()
             ))
         );
     }
@@ -126,7 +126,7 @@ mod tests {
             result,
             Err((
                 "'loop' statement not found".into(),
-                interpreter.get_location()
+                interpreter.location()
             ))
         );
     }

@@ -13,6 +13,9 @@ example-print-documentation: FORCE
 example-custom-builtin: FORCE
 	cargo run --example custom_builtin
 
+example-custom-error: FORCE
+	cargo run --example custom_error
+
 example-repl: FORCE
 	cargo run --example repl
 

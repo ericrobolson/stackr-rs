@@ -37,7 +37,7 @@ impl Instruction {
                     "Expected an address, got {}",
                     self.display_type(interpreter)
                 ),
-                interpreter.get_location(),
+                interpreter.location(),
             )),
         }
     }
@@ -49,7 +49,7 @@ impl Instruction {
             Instruction::PushNumber(number) => Ok(*number),
             _ => Err((
                 format!("Expected a number, got {}", self.display_type(interpreter)),
-                interpreter.get_location(),
+                interpreter.location(),
             )),
         }
     }
@@ -60,7 +60,7 @@ impl Instruction {
             Instruction::PushString(string) => Ok(string.clone()),
             _ => Err((
                 format!("Expected a string, got {}", self.display_type(interpreter)),
-                interpreter.get_location(),
+                interpreter.location(),
             )),
         }
     }

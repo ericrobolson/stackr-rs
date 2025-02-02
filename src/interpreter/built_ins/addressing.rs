@@ -50,7 +50,7 @@ pub fn register_builtins<State>(interpreter: &mut Interpreter<State>) {
                     panic!("Can't get value of built in function '{}'", name);
                 }
                 None => {
-                    return Err(("Unknown address".to_string(), interpreter.get_location()));
+                    return Err(("Unknown address".to_string(), interpreter.location()));
                 }
             }
             Ok(())

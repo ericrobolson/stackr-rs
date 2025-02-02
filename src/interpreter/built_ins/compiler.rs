@@ -28,7 +28,7 @@ pub fn register_builtins<State>(interpreter: &mut Interpreter<State>) {
                     Some(idx) => idx,
                     None => return Err((
                         "No ; found, unable to compile".into(),
-                        interpreter.get_location(),
+                        interpreter.location(),
                     )),
                 };
 

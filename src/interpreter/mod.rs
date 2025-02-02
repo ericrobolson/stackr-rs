@@ -151,14 +151,14 @@ impl<State> Interpreter<State> {
     pub fn pop(&mut self) -> Result<StackValue, Err> {
         self.stack
             .pop()
-            .ok_or(("Stack is empty".to_string(), self.get_location()))
+            .ok_or(("Stack is empty".to_string(), self.location()))
     }
 
     /// Pop a boolean from the stack.
     pub fn pop_bool(&mut self) -> Result<bool, Err> {
         match self.pop()? {
             StackValue::Value(Value::Number(number)) => Ok(number != 0.0),
-            _ => Err(("Expected a boolean/number".to_string(), self.get_location())),
+            _ => Err(("Expected a boolean/number".to_string(), self.location())),
         }
     }
 
@@ -166,7 +166,7 @@ impl<State> Interpreter<State> {
     pub fn pop_number(&mut self) -> Result<f32, Err> {
         match self.pop()? {
             StackValue::Value(Value::Number(number)) => Ok(number),
-            _ => Err(("Expected a number".to_string(), self.get_location())),
+            _ => Err(("Expected a number".to_string(), self.location())),
         }
     }
 
@@ -184,7 +184,7 @@ impl<State> Interpreter<State> {
     pub fn pop_address(&mut self) -> Result<Address, Err> {
         match self.pop()? {
             StackValue::Address(address) => Ok(address),
-            _ => Err(("Expected an address".to_string(), self.get_location())),
+            _ => Err(("Expected an address".to_string(), self.location())),
         }
     }
 
@@ -197,7 +197,7 @@ impl<State> Interpreter<State> {
     pub fn pop_string(&mut self) -> Result<String, Err> {
         match self.pop()? {
             StackValue::Value(Value::String(string)) => Ok(string),
-            _ => Err(("Expected a string".to_string(), self.get_location())),
+            _ => Err(("Expected a string".to_string(), self.location())),
         }
     }
 
@@ -292,7 +292,7 @@ impl<State> Interpreter<State> {
     /// Get the next instruction from the program.
     pub(crate) fn chomp_instruction(&mut self) -> Result<Instruction, Err> {
         if self.program_counter >= self.program.len() {
-            return Err(("No more instructions".to_string(), self.get_location()));
+            return Err(("No more instructions".to_string(), self.location()));
         }
 
         let instruction = self.program[self.program_counter].clone();
@@ -300,8 +300,8 @@ impl<State> Interpreter<State> {
         Ok(instruction)
     }
 
-    /// Get the location of the current instruction.
-    fn get_location(&self) -> Location {
+    /// Returns the location of the current instruction.
+    pub fn location(&self) -> Location {
         if self.program_debug_locations.is_empty()
             || self.program_counter >= self.program_debug_locations.len()
         {

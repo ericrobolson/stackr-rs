@@ -55,10 +55,7 @@ pub fn register_builtins<State>(interpreter: &mut Interpreter<State>) {
             let end_pc = match end_pc {
                 Some(pc) => pc,
                 None => {
-                    return Err((
-                        "'end' statement not found".into(),
-                        interpreter.get_location(),
-                    ));
+                    return Err(("'end' statement not found".into(), interpreter.location()));
                 }
             };
 
@@ -109,10 +106,7 @@ mod tests {
         let result: Result<(), (String, Location)> = interpreter.evaluate(code, None);
         assert_eq!(
             result,
-            Err((
-                "'end' statement not found".into(),
-                interpreter.get_location()
-            ))
+            Err(("'end' statement not found".into(), interpreter.location()))
         );
     }
 

@@ -116,7 +116,7 @@ impl<State> Interpreter<State> {
                     // Get address contents from memory and execute
                     let contents = self.ram.get(&address).ok_or((
                         format!("Address not found: {}", self.get_name(address)),
-                        self.get_location(),
+                        self.location(),
                     ))?;
                     let ops_to_execute = match contents {
                         RamValue::Compiled(ops) => Some(ops.clone()),

@@ -49,7 +49,7 @@ pub fn register_builtins<State>(interpreter: &mut Interpreter<State>) {
             let b = interpreter.pop_number()?;
             let a = interpreter.pop_number()?;
             if a == 0.0 {
-                return Err(("Division by zero".to_string(), interpreter.get_location()));
+                return Err(("Division by zero".to_string(), interpreter.location()));
             }
             interpreter.push_number(b / a); // Note: b / a since stack order
             Ok(())
