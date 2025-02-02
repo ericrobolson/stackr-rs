@@ -1,6 +1,6 @@
 [package]
 name = "stackr-rs"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 license = "MIT"
 description = "A stack-based interpreter to be embedded in your application. Heavily inspired by Forth."
