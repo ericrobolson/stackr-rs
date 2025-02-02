@@ -1,4 +1,4 @@
-use stacker_rs::*;
+use stackr_rs::*;
 
 fn main() {
     println!("This is how you print documentation");

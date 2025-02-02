@@ -1,4 +1,4 @@
-use stacker_rs::*;
+use stackr_rs::*;
 
 fn main() {
     // TODO: figure out way to start repl in interpreter
