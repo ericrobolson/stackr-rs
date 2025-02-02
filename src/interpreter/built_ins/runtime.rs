@@ -2,6 +2,14 @@ use super::*;
 
 pub fn register_builtins<State>(interpreter: &mut Interpreter<State>) {
     interpreter.register_builtin(
+        ".",
+        "",
+        "NOOP operation. Used for denoting line breaks in the program.",
+        "",
+        |_interpreter| Ok(()),
+    );
+
+    interpreter.register_builtin(
         "print-program",
         "",
         "Prints the program.",

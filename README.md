@@ -130,6 +130,7 @@ interpreter.start_repl();
 
 ## Useful words
 
+- `.` Noop operation. Used for denoting line breaks in the program.
 - `print-stack` - Prints the stack
 - `documentation` - Prints all registered words and their documentation
 - `drop`, `dup`, `swap`, `over` - Various stack manipulation words

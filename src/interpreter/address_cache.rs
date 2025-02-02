@@ -16,6 +16,8 @@ pub(crate) struct AddressCache {
     pub begin_statement: Address,
     /// Address of the loop statement.
     pub loop_statement: Address,
+    /// Address of the . operation.
+    pub noop_operation: Address,
 }
 
 impl AddressCache {
@@ -29,6 +31,7 @@ impl AddressCache {
             break_statement: Address::default(),
             begin_statement: Address::default(),
             loop_statement: Address::default(),
+            noop_operation: Address::default(),
         }
     }
 
@@ -47,6 +50,7 @@ impl AddressCache {
         cache.break_statement = interpreter.get_address("break");
         cache.begin_statement = interpreter.get_address("begin");
         cache.loop_statement = interpreter.get_address("loop");
+        cache.noop_operation = interpreter.get_address(".");
 
         interpreter.address_cache = cache;
     }

@@ -1,11 +1,9 @@
 use super::*;
 
-const MAX_TOKENS_ON_LINE: usize = 8;
 struct ProgramTokens {
     tokens: Vec<String>,
     indent_count: usize,
     buffer: String,
-    current_tokens_on_line: usize,
 }
 impl ProgramTokens {
     pub fn new() -> Self {
@@ -13,7 +11,6 @@ impl ProgramTokens {
             buffer: String::new(),
             tokens: vec![],
             indent_count: 0,
-            current_tokens_on_line: 0,
         }
     }
 
@@ -47,10 +44,6 @@ impl ProgramTokens {
             return;
         }
         self.buffer.push_str(&self.tokens.remove(0));
-        self.current_tokens_on_line += 1;
-        if self.current_tokens_on_line >= MAX_TOKENS_ON_LINE {
-            self.add_newline();
-        }
     }
 
     pub fn peek(&self) -> Option<String> {
@@ -65,7 +58,6 @@ impl ProgramTokens {
         for _ in 0..self.indent_count {
             self.buffer.push('\t');
         }
-        self.current_tokens_on_line = 0;
     }
 }
 
@@ -173,6 +165,20 @@ impl<State> Interpreter<State> {
                     tokens.add_newline();
                     tokens.chomp();
                 }
+                "." => {
+                    tokens.add_space();
+                    tokens.chomp();
+                    tokens.add_newline();
+
+                    if let Some(token) = tokens.peek() {
+                        match token.as_str() {
+                            ":" | "begin" | "if" => {
+                                tokens.add_newline();
+                            }
+                            _ => {}
+                        }
+                    }
+                }
                 _ => {
                     if Some("begin".to_string()) == tokens.peek()
                         || Some("if".to_string()) == tokens.peek()
@@ -206,6 +212,38 @@ mod tests {
         println!("{}", actual);
         println!("ACTUAL END\n");
         assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn stringify_with_noop_formats_nicely() {
+        let code = r#"
+        var 
+        stuff 
+        .
+    
+        1 stuff 
+        set .
+    
+        stuff
+        get 
+        .
+    
+    
+        : debug "" "" "" print-stack drop ;
+        0 begin 1 + dup 2 == if 
+                "hello" .  stuff get drop .  break
+            end
+    
+            dup
+            2 == if 
+                "hello"
+            else
+                "world" drop end loop "world""#;
+
+        let actual = Interpreter::<()>::format_code(code, None).unwrap();
+        let expected = "var stuff .\n1 stuff set .\nstuff get .\n\n: debug\n\t\"\"\n\t\"\"\n\t\"\"\n\t\n\tprint-stack drop\n;\n\n0\nbegin\n\t1 + dup 2 ==\n\tif\n\t\t\"hello\" .\n\t\tstuff get drop .\n\t\t\n\t\tbreak\n\tend\n\t\n\tdup 2 ==\n\tif\n\t\t\"hello\"\n\telse\n\t\t\"world\" drop\n\tend\nloop\n\n\"world\"\n";
+
+        assert_equal(expected, &actual);
     }
 
     #[test]

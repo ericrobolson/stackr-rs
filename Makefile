@@ -7,6 +7,9 @@ example-if: FORCE
 example-custom-word: FORCE
 	cargo run --example custom_word
 
+example-format-code: FORCE
+	cargo run --example format_code
+
 example-print-documentation: FORCE
 	cargo run --example print_documentation
 
