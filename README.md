@@ -4,7 +4,12 @@ A stack-based interpreter written in Rust.
 Heavily inspired by Forth.
 Useful for embedding a scripting layer in your application.
 
-Add this to your `Cargo.toml`:
+To add to your project, run:
+```
+cargo add stackr-rs
+```
+
+To use the main branch, add this to your `Cargo.toml`:
 ```
 [dependencies]
 # Reference git repo
