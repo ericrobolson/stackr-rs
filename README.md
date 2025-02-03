@@ -1,4 +1,4 @@
-# stacker-rs
+# stackr-rs
 
 A stack-based interpreter written in Rust.
 Heavily inspired by Forth.
@@ -13,7 +13,7 @@ To use the main branch, add this to your `Cargo.toml`:
 ```
 [dependencies]
 # Reference git repo
-stacker-rs = { git = "https://github.com/ericrobolson/stacker-rs.git" } 
+stacker-rs = { git = "https://github.com/ericrobolson/stackr-rs.git" } 
 ```
 
 ## Examples
