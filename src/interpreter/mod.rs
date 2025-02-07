@@ -20,7 +20,7 @@ mod stringify;
 pub(crate) use address_cache::*;
 pub(crate) use instruction::*;
 pub(crate) use ram_value::*;
-pub(crate) use stack_value::*;
+pub use stack_value::*;
 
 pub use address::*;
 pub use built_ins::*;
