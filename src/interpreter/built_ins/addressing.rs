@@ -27,6 +27,19 @@ pub fn register_builtins<State>(interpreter: &mut Interpreter<State>) {
     );
 
     interpreter.register_builtin(
+        "@",
+        "@address @ --",
+        "Evaluates an address on the stack.",
+        "var life 42 life set life @ -- 42",
+        |interpreter| {
+            let address = interpreter.pop_address()?;
+            interpreter.execute_instruction(Instruction::Address(address))?;
+
+            Ok(())
+        },
+    );
+
+    interpreter.register_builtin(
         "get",
         "@name get -- <value>",
         "Gets the value of a variable and puts it on the stack.",
@@ -61,6 +74,33 @@ pub fn register_builtins<State>(interpreter: &mut Interpreter<State>) {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn execute_address_unknown_address_returns_err() {
+        let mut interpreter = Interpreter::new(());
+        interpreter.register_builtins();
+        let result = interpreter.evaluate("life @", None);
+        assert!(result.is_err());
+        let (err, _) = result.unwrap_err();
+        assert_eq!(err, "Address not found: life");
+    }
+
+    #[test]
+    fn execute_address_evaluates_address_simple_case() {
+        let mut interpreter = Interpreter::new(());
+        interpreter.register_builtins();
+        interpreter.evaluate("var life 42 life set", None).unwrap();
+        interpreter.evaluate("life @", None).unwrap();
+        assert_eq!(interpreter.stack, [42.0.into()]);
+    }
+
+    #[test]
+    fn execute_address_evaluates_address_with_reader_case() {
+        let mut interpreter = Interpreter::new(());
+        interpreter.register_builtins();
+        interpreter.evaluate("1 2 [ + ] @", None).unwrap();
+        assert_eq!(interpreter.stack, [3.0.into()]);
+    }
 
     #[test]
     fn var_puts_address_on_stack() {

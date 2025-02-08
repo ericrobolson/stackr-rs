@@ -19,6 +19,9 @@ example-custom-builtin: FORCE
 example-custom-error: FORCE
 	cargo run --example custom_error
 
+example-execute-address: FORCE
+	cargo run --example execute_address
+
 example-repl: FORCE
 	cargo run --example repl
 
