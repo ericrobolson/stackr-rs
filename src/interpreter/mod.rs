@@ -429,6 +429,20 @@ mod tests {
         assert_eq!(value, "hello");
     }
 
+    #[test]
+    fn var_only_creates_if_not_already_in_ram() {
+        let mut interpreter = Interpreter::new(());
+        let address = interpreter.next_address;
+        interpreter.evaluate("var test", None).unwrap();
+
+        let first_call = interpreter.ram.get(&address).unwrap().clone();
+
+        interpreter.evaluate("var test", None).unwrap();
+
+        let second_call = interpreter.ram.get(&address).unwrap().clone();
+        assert_eq!(first_call, second_call);
+    }
+
     // #[test]
     // fn parse_string_puts_escaped_string_on_stack() {
     //     let mut interpreter = Interpreter::new(());

@@ -1,7 +1,7 @@
 use super::*;
 
 /// An instruction that can be executed by the interpreter.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub(crate) enum Instruction {
     /// Push a number onto the stack.
     PushNumber(Number),

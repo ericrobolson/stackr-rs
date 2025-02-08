@@ -1,6 +1,6 @@
 use super::*;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub(crate) enum RamValue<State> {
     BuiltIn(BuiltIn<State>),
     Value(Value),

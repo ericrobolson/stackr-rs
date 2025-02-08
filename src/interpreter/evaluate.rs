@@ -105,10 +105,14 @@ impl<State> Interpreter<State> {
                 if self.read_mode != ReadMode::Off && address != self.address_cache.read_mode_end {
                     if self.read_mode == ReadMode::SingleWord {
                         self.read_mode = ReadMode::Off;
-                        let variable_location = self.next_address;
-                        self.next_address = self.next_address.next();
-                        self.ram
-                            .insert(address, RamValue::Address(variable_location));
+
+                        // Only insert a new address if it is not already in the ram
+                        if !self.ram.contains_key(&address) {
+                            let variable_location = self.next_address;
+                            self.next_address = self.next_address.next();
+                            self.ram
+                                .insert(address, RamValue::Address(variable_location));
+                        }
                     } else {
                         self.push_address(address);
                     }
