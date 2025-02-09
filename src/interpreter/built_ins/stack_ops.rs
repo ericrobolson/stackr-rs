@@ -2,6 +2,33 @@ use super::*;
 
 pub fn register_builtins<State>(interpreter: &mut Interpreter<State>) {
     interpreter.register_builtin(
+        "clear-stack",
+        ".. --",
+        "Clears the entire stack.",
+        "clear-stack",
+        |interpreter| {
+            interpreter.stack.clear();
+
+            Ok(())
+        },
+    );
+
+    interpreter.register_builtin(
+        "stack-size",
+        "-- n",
+        "Pushes the size of the stack onto the stack.",
+        "stack-size",
+        |interpreter| {
+            let size = interpreter.stack.len() as f32;
+            interpreter
+                .stack
+                .push(StackValue::Value(Value::Number(size)));
+
+            Ok(())
+        },
+    );
+
+    interpreter.register_builtin(
         "dup",
         "n -- n n",
         "Duplicates the top item on the stack.",
@@ -75,6 +102,25 @@ pub fn register_builtins<State>(interpreter: &mut Interpreter<State>) {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_clear_stack() {
+        let mut interpreter = Interpreter::new(());
+        interpreter.evaluate("1 2 3", None).unwrap();
+        assert_eq!(interpreter.stack.len(), 3);
+        interpreter.evaluate("clear-stack", None).unwrap();
+        assert_eq!(interpreter.stack.len(), 0);
+    }
+
+    #[test]
+    fn test_stack_size() {
+        let mut interpreter = Interpreter::new(());
+        interpreter.evaluate("1 2 3", None).unwrap();
+        assert_eq!(interpreter.stack.len(), 3);
+        interpreter.evaluate("stack-size", None).unwrap();
+        assert_eq!(interpreter.stack.len(), 4);
+        assert_eq!(interpreter.pop_number().unwrap(), 3.0);
+    }
 
     #[test]
     fn test_over() {
