@@ -102,13 +102,13 @@ pub fn register_builtins<State>(interpreter: &mut Interpreter<State>) {
         "rotn",
         "n rotn --",
         "Rotates the top of the stack with the nth item.",
-        "1 2 2 rotn ",
+        "1 2 1 rotn ",
         |interpreter| {
             let n = interpreter.pop_number()?;
 
             if n < 0.0 {
                 return Err((
-                    format!("n must be greater than 0, got {}", n),
+                    format!("n must be greater than or equal to 0, got {}", n),
                     interpreter.location(),
                 ));
             }
@@ -132,6 +132,42 @@ pub fn register_builtins<State>(interpreter: &mut Interpreter<State>) {
             Ok(())
         },
     );
+
+    interpreter.register_builtin(
+        "pluck",
+        "n pluck --",
+        "Pulls the nth item from the stack to the top.",
+        "1 2 1 pluck ",
+        |interpreter| {
+            let n = interpreter.pop_number()?;
+
+            if n < 0.0 {
+                return Err((
+                    format!("n must be greater than or equal to 0, got {}", n),
+                    interpreter.location(),
+                ));
+            }
+
+            let n = n as usize;
+
+            if n > interpreter.stack.len() {
+                return Err((
+                    format!("n is greater than the stack size, got {}", n),
+                    interpreter.location(),
+                ));
+            }
+
+            if interpreter.stack.len() == 0 {
+                return Err(("Stack is empty".to_string(), interpreter.location()));
+            };
+
+            let last_idx = interpreter.stack.len() - 1;
+            let item = interpreter.stack.remove(last_idx - n);
+            interpreter.stack.push(item);
+
+            Ok(())
+        },
+    );
 }
 
 #[cfg(test)]
@@ -139,12 +175,68 @@ mod tests {
     use super::*;
 
     #[test]
+    fn test_pluck_negative() {
+        let mut interpreter = Interpreter::new(());
+        let result = interpreter.evaluate("-1 pluck", None);
+        assert_eq!(
+            Err((
+                "n must be greater than or equal to 0, got -1".to_string(),
+                (1, 4).into()
+            )),
+            result,
+        );
+    }
+
+    #[test]
+    fn test_pluck_greater_than_stack_size() {
+        let mut interpreter = Interpreter::new(());
+        let result = interpreter.evaluate("3 pluck", None);
+        assert_eq!(
+            Err((
+                "n is greater than the stack size, got 3".to_string(),
+                (1, 3).into()
+            )),
+            result,
+        );
+    }
+
+    #[test]
+    fn test_pluck_zero_does_nothing() {
+        let mut interpreter = Interpreter::new(());
+        interpreter.evaluate("1 2 3 4 5 0 pluck", None).unwrap();
+        assert_eq!(5.0, interpreter.pop_number().unwrap());
+        assert_eq!(4.0, interpreter.pop_number().unwrap());
+        assert_eq!(3.0, interpreter.pop_number().unwrap());
+        assert_eq!(2.0, interpreter.pop_number().unwrap());
+        assert_eq!(1.0, interpreter.pop_number().unwrap());
+    }
+
+    #[test]
+    fn test_pluck_swaps_two_elements() {
+        let mut interpreter = Interpreter::new(());
+        interpreter.evaluate("1 2 1 pluck", None).unwrap();
+        assert_eq!(1.0, interpreter.pop_number().unwrap());
+        assert_eq!(2.0, interpreter.pop_number().unwrap());
+    }
+
+    #[test]
+    fn test_pluck_swaps_two_elements_with_more_elements() {
+        let mut interpreter = Interpreter::new(());
+        interpreter.evaluate("1 2 3 4 5 4 pluck", None).unwrap();
+        assert_eq!(1.0, interpreter.pop_number().unwrap());
+        assert_eq!(5.0, interpreter.pop_number().unwrap());
+        assert_eq!(4.0, interpreter.pop_number().unwrap());
+        assert_eq!(3.0, interpreter.pop_number().unwrap());
+        assert_eq!(2.0, interpreter.pop_number().unwrap());
+    }
+
+    #[test]
     fn test_rotn_negative() {
         let mut interpreter = Interpreter::new(());
         let result = interpreter.evaluate("-1 rotn", None);
         assert_eq!(
             Err((
-                "n must be greater than 0, got -1".to_string(),
+                "n must be greater than or equal to 0, got -1".to_string(),
                 (1, 4).into()
             )),
             result,
