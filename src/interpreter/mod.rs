@@ -118,6 +118,11 @@ impl<State> Interpreter<State> {
         interpreter
     }
 
+    /// Returns whether the interpreter should exit.
+    pub fn exit(&self) -> bool {
+        self.exit
+    }
+
     /// Evaluate a program.
     pub fn evaluate(&mut self, code: &str, path: Option<PathBuf>) -> Result<(), Err> {
         self.load_program(code, path)?;

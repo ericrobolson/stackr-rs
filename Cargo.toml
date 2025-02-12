@@ -1,6 +1,6 @@
 [package]
 name = "stackr-rs"
-version = "0.1.13"
+version = "0.1.14"
 edition = "2021"
 license = "MIT"
 documentation = "https://docs.rs/stackr-rs/latest/stackr_rs/"

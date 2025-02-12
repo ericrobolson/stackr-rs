@@ -4,6 +4,7 @@
 - [x] Add a way to get the size of the stack
 - [x] Add rotn, a way to swap the top of the stack with the nth item
 - [x] Add pluck, a way to pull the nth item from the stack to the top
+- [x] Add a method to see if the interpreter should exit
 - [ ] Fix issue with nested if statements
 - [ ] Fix REPL mode launching from interpreter. Calling `repl` command messes stuff up, also having an error in the repl doesn't increment the PC and just explodes the app. Maybe repl should reset pc?
 - [ ] Remove noop from interpreter
