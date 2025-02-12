@@ -97,11 +97,102 @@ pub fn register_builtins<State>(interpreter: &mut Interpreter<State>) {
             Ok(())
         },
     );
+
+    interpreter.register_builtin(
+        "rotn",
+        "n rotn --",
+        "Rotates the top of the stack with the nth item.",
+        "1 2 2 rotn ",
+        |interpreter| {
+            let n = interpreter.pop_number()?;
+
+            if n < 0.0 {
+                return Err((
+                    format!("n must be greater than 0, got {}", n),
+                    interpreter.location(),
+                ));
+            }
+
+            let n = n as usize;
+
+            if n > interpreter.stack.len() {
+                return Err((
+                    format!("n is greater than the stack size, got {}", n),
+                    interpreter.location(),
+                ));
+            }
+
+            if interpreter.stack.len() == 0 {
+                return Err(("Stack is empty".to_string(), interpreter.location()));
+            }
+
+            let last_idx = interpreter.stack.len() - 1;
+            interpreter.stack.swap(last_idx - n, last_idx);
+
+            Ok(())
+        },
+    );
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_rotn_negative() {
+        let mut interpreter = Interpreter::new(());
+        let result = interpreter.evaluate("-1 rotn", None);
+        assert_eq!(
+            Err((
+                "n must be greater than 0, got -1".to_string(),
+                (1, 4).into()
+            )),
+            result,
+        );
+    }
+
+    #[test]
+    fn test_rotn_greater_than_stack_size() {
+        let mut interpreter = Interpreter::new(());
+        let result = interpreter.evaluate("3 rotn", None);
+        assert_eq!(
+            Err((
+                "n is greater than the stack size, got 3".to_string(),
+                (1, 3).into()
+            )),
+            result,
+        );
+    }
+
+    #[test]
+    fn test_rotn_zero_does_nothing() {
+        let mut interpreter = Interpreter::new(());
+        interpreter.evaluate("1 2 3 4 5 0 rotn", None).unwrap();
+        assert_eq!(5.0, interpreter.pop_number().unwrap());
+        assert_eq!(4.0, interpreter.pop_number().unwrap());
+        assert_eq!(3.0, interpreter.pop_number().unwrap());
+        assert_eq!(2.0, interpreter.pop_number().unwrap());
+        assert_eq!(1.0, interpreter.pop_number().unwrap());
+    }
+
+    #[test]
+    fn test_rotn_swaps_two_elements() {
+        let mut interpreter = Interpreter::new(());
+        interpreter.evaluate("1 2 1 rotn", None).unwrap();
+        assert_eq!(1.0, interpreter.pop_number().unwrap());
+        assert_eq!(2.0, interpreter.pop_number().unwrap());
+    }
+
+    #[test]
+    fn test_rotn_swaps_two_elements_with_more_elements() {
+        let mut interpreter = Interpreter::new(());
+        interpreter.evaluate("1 2 3 4 5 4 rotn", None).unwrap();
+        assert_eq!(1.0, interpreter.pop_number().unwrap());
+        assert_eq!(4.0, interpreter.pop_number().unwrap());
+        assert_eq!(3.0, interpreter.pop_number().unwrap());
+        assert_eq!(2.0, interpreter.pop_number().unwrap());
+        assert_eq!(5.0, interpreter.pop_number().unwrap());
+    }
 
     #[test]
     fn test_clear_stack() {

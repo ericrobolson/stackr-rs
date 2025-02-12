@@ -45,3 +45,12 @@ impl Display for Location {
         }
     }
 }
+impl From<(usize, usize)> for Location {
+    fn from((line, column): (usize, usize)) -> Self {
+        Location {
+            line,
+            column,
+            path: None,
+        }
+    }
+}
